@@ -11,7 +11,6 @@ namespace MoneyManager.ModelGenerator
             {
                 Id = Guid.NewGuid(),
                 Name = StringGenerator.RandomString(),
-                //User = user,
                 UserId = user.Id
             };
         }

@@ -7,10 +7,11 @@ namespace MoneyManager
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasData(DbGenerator.GenerateUsers());
-            modelBuilder.Entity<Asset>().HasData(DbGenerator.GenerateAssets());
-            modelBuilder.Entity<Category>().HasData(DbGenerator.GenerateCategories());
-            modelBuilder.Entity<Transaction>().HasData(DbGenerator.GenerateTransactions());
+            DbGenerator dbGenerator = new DbGenerator();
+            modelBuilder.Entity<User>().HasData(dbGenerator.DefaultUsers);
+            modelBuilder.Entity<Asset>().HasData(dbGenerator.DefaultAssets);
+            modelBuilder.Entity<Category>().HasData(dbGenerator.DefaultCategories);
+            modelBuilder.Entity<Transaction>().HasData(dbGenerator.DefaultTransactions);
         }
     }
 }

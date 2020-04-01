@@ -5,56 +5,60 @@ namespace MoneyManager
 {
     public class DbGenerator
     {
-        private const int userAmount = 5;
-        private const int assetAmount = 20;
-        private const int categoryAmount = 10;
-        private const int transactionAmount = 100;
+        private const int UserAmount = 5;
+        private const int AssetAmount = 20;
+        private const int CategoryAmount = 10;
+        private const int TransactionAmount = 100;
 
-        private static readonly User[] _defaultUsers = new User[userAmount];
-        private static readonly Asset[] _defaultAssets = new Asset[assetAmount];
-        private static readonly Category[] _defaultCategories = new Category[categoryAmount];
-        private static readonly Transaction[] _defaultTransactions = new Transaction[transactionAmount];
+        public User[] DefaultUsers = new User[UserAmount];
+        public Asset[] DefaultAssets = new Asset[AssetAmount];
+        public Category[] DefaultCategories = new Category[CategoryAmount];
+        public Transaction[] DefaultTransactions = new Transaction[TransactionAmount];
 
-        public static User[] GenerateUsers()
+        public DbGenerator()
         {
-            for(int i = 0; i < userAmount; i++)
-            {
-                _defaultUsers[i] = UserGenerator.GenerateUser();
-            }
-            return _defaultUsers;
+            GenerateUsers();
+            GenerateAssets();
+            GenerateCategories();
+            GenerateTransactions();
         }
 
-        public static Asset[] GenerateAssets()
+        private void GenerateUsers()
         {
-            for (int i = 0; i < assetAmount; i++)
+            for(int i = 0; i < UserAmount; i++)
             {
-                _defaultAssets[i] = AssetGenerator.GenerateAsset(_defaultUsers[i % userAmount]);
+                DefaultUsers[i] = UserGenerator.GenerateUser();
             }
-            return _defaultAssets;
         }
 
-        public static Category[] GenerateCategories()
+        private void GenerateAssets()
         {
-            for (int i = 0; i < categoryAmount/2; i++)
+            for (int i = 0; i < AssetAmount; i++)
             {
-                _defaultCategories[i] = CategoryGenerator.GenerateCategory();
+                DefaultAssets[i] = AssetGenerator.GenerateAsset(DefaultUsers[i % UserAmount]);
             }
-
-            for (int i = categoryAmount / 2; i < categoryAmount; i++)
-            {
-                _defaultCategories[i] = CategoryGenerator.GenerateCategory(_defaultCategories[i % categoryAmount/2]);
-            }
-            return _defaultCategories;
         }
 
-        public static Transaction[] GenerateTransactions()
+        private void GenerateCategories()
         {
-            for(int i = 0; i < transactionAmount; i++)
+            for (int i = 0; i < CategoryAmount/2; i++)
             {
-                _defaultTransactions[i] = TransactionGenerator
-                    .GenerateTransaction(_defaultAssets[i % assetAmount], _defaultCategories[i % categoryAmount]);
+                DefaultCategories[i] = CategoryGenerator.GenerateCategory();
             }
-            return _defaultTransactions;
+
+            for (int i = CategoryAmount / 2; i < CategoryAmount; i++)
+            {
+                DefaultCategories[i] = CategoryGenerator.GenerateCategory(DefaultCategories[i % CategoryAmount/2]);
+            }
+        }
+
+        private void GenerateTransactions()
+        {
+            for(int i = 0; i < TransactionAmount; i++)
+            {
+                DefaultTransactions[i] = TransactionGenerator
+                    .GenerateTransaction(DefaultAssets[i % AssetAmount], DefaultCategories[i % CategoryAmount]);
+            }
         }
     }
 }

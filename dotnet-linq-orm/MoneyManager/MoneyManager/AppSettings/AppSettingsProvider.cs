@@ -25,7 +25,6 @@ namespace MoneyManager.AppSettings
 
             IConfigurationRoot configuration = builder.Build();
             AppSettings appSettings = configuration.GetSection(SectionName).Get<AppSettings>();
-           // appSettings.ConnectionString = appSettings.ConnectionString.Replace("DataDirectory\\", AppDomain.CurrentDomain.BaseDirectory);
             return appSettings;
         }
 

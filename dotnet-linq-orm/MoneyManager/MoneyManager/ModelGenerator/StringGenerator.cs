@@ -5,14 +5,18 @@ namespace MoneyManager.ModelGenerator
 {
     public static class StringGenerator
     {
-        private const int fieldLength = 7;
+        private const int DefaultLength = 7;
 
-        public static string RandomString()
+        public static string RandomString(int length = DefaultLength)
         {
             Random random = new Random();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, fieldLength)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            var sequence = Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)])
+                .ToArray();
+
+            return new string(sequence);
         }
     }
 }

@@ -5,7 +5,7 @@ using MoneyManager.Models;
 
 namespace MoneyManager
 {
-    public class MoneyManagerContext: DbContext
+    public sealed class MoneyManagerContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Asset> Assets { get; set; }
@@ -14,7 +14,6 @@ namespace MoneyManager
 
         public MoneyManagerContext()
         {
-            Database.EnsureDeleted();   
             Database.EnsureCreated();
         }
 

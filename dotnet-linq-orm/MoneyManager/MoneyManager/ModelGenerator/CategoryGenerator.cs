@@ -1,5 +1,4 @@
-﻿
-using MoneyManager.Models;
+﻿using MoneyManager.Models;
 using System;
 
 namespace MoneyManager.ModelGenerator
@@ -8,13 +7,9 @@ namespace MoneyManager.ModelGenerator
     {
         public static Category GenerateCategory(Category parentCategory)
         {
-            return new Category
-            {
-                Id = Guid.NewGuid(),
-                Name = StringGenerator.RandomString(),
-                Type = new Random().Next(0, 2),
-                ParentId = parentCategory.Id,
-            };
+            Category category = GenerateCategory();
+            category.ParentCategoryId = parentCategory.Id;
+            return category;
         }
 
         public static Category GenerateCategory()
@@ -23,7 +18,7 @@ namespace MoneyManager.ModelGenerator
             {
                 Id = Guid.NewGuid(),
                 Name = StringGenerator.RandomString(),
-                Type = new Random().Next(0, 2),
+                Type = (CategoryType)new Random().Next(1, 3)
             };
         }
     }
