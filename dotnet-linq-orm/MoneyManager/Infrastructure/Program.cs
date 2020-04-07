@@ -1,4 +1,4 @@
-﻿namespace MoneyManager
+﻿namespace Infrastructure
 {
     public class Program
     {

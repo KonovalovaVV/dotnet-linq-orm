@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace MoneyManager.AppSettings
+namespace Infrastructure.AppSettings
 {
     public class AppSettingsProvider
     {

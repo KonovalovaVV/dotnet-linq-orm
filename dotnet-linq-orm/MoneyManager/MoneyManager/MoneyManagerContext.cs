@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MoneyManager.AppSettings;
+using Infrastructure.AppSettings;
 using MoneyManager.ModelConfigurations;
 using MoneyManager.Models;
 

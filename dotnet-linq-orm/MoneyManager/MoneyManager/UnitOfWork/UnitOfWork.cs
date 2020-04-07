@@ -1,21 +1,19 @@
-﻿using MoneyManager.DAL.Repository;
+﻿using MoneyManager.Repository;
 using System;
 
-namespace MoneyManager.DAL.UnitOfWork
+namespace MoneyManager.UnitOfWork
 {
-    public class EFUnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly MoneyManagerContext _moneyManagerContext;
         private UserRepository userRepository;
         private AssetRepository assetRepository;
         private CategoryRepository categoryRepository;
         private TransactionRepository transactionRepository;
-        public Query query;
 
-        public EFUnitOfWork(MoneyManagerContext moneyManagerContext)
+        public UnitOfWork(MoneyManagerContext moneyManagerContext)
         {
             _moneyManagerContext = moneyManagerContext;
-            query = new Query(this, _moneyManagerContext);
         }
 
         public UserRepository Users

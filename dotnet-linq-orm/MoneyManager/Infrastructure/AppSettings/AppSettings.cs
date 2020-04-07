@@ -1,4 +1,4 @@
-﻿namespace MoneyManager.AppSettings
+﻿namespace Infrastructure.AppSettings
 {
     public class AppSettings
     {

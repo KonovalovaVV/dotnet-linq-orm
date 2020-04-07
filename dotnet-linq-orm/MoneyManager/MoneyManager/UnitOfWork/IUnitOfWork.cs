@@ -1,7 +1,7 @@
-﻿using MoneyManager.DAL.Repository;
+﻿using MoneyManager.Repository;
 using System;
 
-namespace MoneyManager.DAL.UnitOfWork
+namespace MoneyManager.UnitOfWork
 {
     public interface IUnitOfWork: IDisposable
     {
@@ -9,7 +9,6 @@ namespace MoneyManager.DAL.UnitOfWork
         AssetRepository Assets { get; }
         CategoryRepository Categories { get; }
         TransactionRepository Transactions { get; }
-
         void Save();
 
     }

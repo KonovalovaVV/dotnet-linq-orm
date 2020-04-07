@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyManager", "MoneyManager\MoneyManager.csproj", "{F40A0D57-18C7-408F-BABB-090F14940F0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyManager", "MoneyManager\MoneyManager.csproj", "{F40A0D57-18C7-408F-BABB-090F14940F0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{95E91D62-9987-4151-AA21-993D595B6484}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{FBEC337A-390F-4269-9E20-970BAF007757}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{F40A0D57-18C7-408F-BABB-090F14940F0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F40A0D57-18C7-408F-BABB-090F14940F0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F40A0D57-18C7-408F-BABB-090F14940F0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95E91D62-9987-4151-AA21-993D595B6484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95E91D62-9987-4151-AA21-993D595B6484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95E91D62-9987-4151-AA21-993D595B6484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95E91D62-9987-4151-AA21-993D595B6484}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBEC337A-390F-4269-9E20-970BAF007757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBEC337A-390F-4269-9E20-970BAF007757}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBEC337A-390F-4269-9E20-970BAF007757}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBEC337A-390F-4269-9E20-970BAF007757}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
