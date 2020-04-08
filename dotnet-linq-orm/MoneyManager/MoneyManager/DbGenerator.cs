@@ -1,7 +1,7 @@
-﻿using MoneyManager.ModelGenerator;
-using MoneyManager.Models;
+﻿using DataAccess.ModelGenerator;
+using DataAccess.Models;
 
-namespace MoneyManager
+namespace DataAccess
 {
     public class DbGenerator
     {

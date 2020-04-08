@@ -1,13 +1,13 @@
-﻿using MoneyManager.DTO;
+﻿using DataAccess.DtoModels;
 using System;
 
-namespace MoneyManager.Mappers
+namespace DataAccess.Mappers
 {
     public class TotalMapper
     {
-        public static TotalDTO MapTotalDTO(decimal incomeValue, decimal expenceValue, DateTime date)
+        public static TotalDto MapToTotalDto(decimal incomeValue, decimal expenceValue, DateTime date)
         {
-            return new TotalDTO
+            return new TotalDto
             {
                 TotalExpence = expenceValue,
                 TotalIncome = incomeValue,

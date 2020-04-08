@@ -1,4 +1,4 @@
-﻿namespace MoneyManager.Models
+﻿namespace DataAccess.Models
 {
     public enum CategoryType
     {

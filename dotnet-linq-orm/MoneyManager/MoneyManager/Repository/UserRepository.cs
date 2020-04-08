@@ -1,51 +1,57 @@
-﻿using MoneyManager.DTO;
-using MoneyManager.Mappers;
-using MoneyManager.Models;
+﻿using DataAccess.DtoModels;
+using DataAccess.Mappers;
+using DataAccess.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq;  
 
-namespace MoneyManager.Repository
+namespace DataAccess.Repository
 {
     public class UserRepository : BaseRepository<User>
     {
-        private readonly MoneyManagerContext _moneyManagerContext;
+        public UserRepository(MoneyManagerContext context) : base(context) { }
 
-        public UserRepository(MoneyManagerContext context) : base(context, context.Users)
+        public new UserDto Get(Guid userId)
         {
-            _moneyManagerContext = context;
+            var user = base.Get(userId);
+            return UserMapper.MapToUserDto(user);
         }
 
         // Write a request to get the user by email.
         public User GetUserByEmail(string email)
         {
-            return _moneyManagerContext.Users.FirstOrDefault(u => u.Email == email);
+            return MoneyManagerContext.Users.FirstOrDefault(u => u.Email == email);
         }
 
         // Write a query to get the user list sorted by the user’s name.
         // Each record of the output model should include
         // User.Id, User.Name and User.Email.
-        public IEnumerable<UserDTO> GetAllUsersOrderByName()
+        public IEnumerable<UserDto> GetAllUsersOrderByName()
         {
-            return UserMapper.MapUserDTO(_moneyManagerContext.Users.OrderBy(u => u.Name));
+            return UserMapper.MapToUserDto(MoneyManagerContext.Users.OrderBy(u => u.Name));
         }
 
         // Write a query to return the current balance for the selected user(parameter userId).
         // Each record of the output model should include User.Id, User.Email, User.Name, and Balance.
-        public UserBalanceDTO GetCurrentBalance(Guid userId)
+        public UserBalanceDto GetCurrentBalance(Guid userId)
         {
-            decimal result = _moneyManagerContext.Transactions
-                .Join(_moneyManagerContext.Categories.Where(c => c.Type == CategoryType.Income),
-                t => t.CategoryId, c => c.Id, (t, c) => t.Amount).Sum();
-            return UserMapper.MapUserBalanceDTO(Get(userId), result);
+            return UserMapper.MapToUserBalanceDto(base.Get(userId));
         }
 
         // Write a query to get the asset list for the selected user (userId) 
         // ordered by the asset’s name.
         // Each record of the output model should include Asset.Id, Asset.Name and Balance.
-        public IEnumerable<AssetDTO> GetUsersAssetsOrderByName(Guid userId)
+        public IEnumerable<AssetDto> GetUsersAssetsOrderByName(Guid userId)
         {
-            return AssetMapper.MapAssetDTO(Get(userId).Assets).OrderBy(a => a.Name);
+            return AssetMapper.MapToAssetDto(base.Get(userId).Assets).OrderBy(a => a.Name);
+        }
+
+        public void DeleteAllTransactionsForMonth(Guid userId)
+        {
+            foreach (var asset in base.Get(userId).Assets)
+            {
+                MoneyManagerContext.Transactions.RemoveRange(asset.Transactions);
+            }
         }
     }
 }

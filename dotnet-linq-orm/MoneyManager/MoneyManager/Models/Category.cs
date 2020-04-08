@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MoneyManager.Models
+namespace DataAccess.Models
 {
     public class Category
     {

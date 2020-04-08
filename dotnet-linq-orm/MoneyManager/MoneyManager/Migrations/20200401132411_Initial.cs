@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MoneyManager.Migrations
+namespace DataAccess.Migrations
 {
     public partial class Initial : Migration
     {

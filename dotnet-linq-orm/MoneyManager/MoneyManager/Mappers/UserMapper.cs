@@ -1,16 +1,15 @@
-﻿using MoneyManager.DTO;
-using MoneyManager.Models;
+﻿using DataAccess.DtoModels;
+using DataAccess.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 
-namespace MoneyManager.Mappers
+namespace DataAccess.Mappers
 {
     public class UserMapper
     {
-        public static UserDTO MapUserDTO(User user)
+        public static UserDto MapToUserDto(User user)
         {
-            return new UserDTO
+            return new UserDto
             {
                 Id = user.Id,
                 Name = user.Name,
@@ -18,19 +17,19 @@ namespace MoneyManager.Mappers
             };
         }
 
-        public static IEnumerable<UserDTO> MapUserDTO(IEnumerable<User> users)
+        public static IEnumerable<UserDto> MapToUserDto(IEnumerable<User> users)
         {
-            return users.Select(x => MapUserDTO(x));
+            return users.Select(x => MapToUserDto(x));
         }
 
-        public static UserBalanceDTO MapUserBalanceDTO(User user, decimal balance)
+        public static UserBalanceDto MapToUserBalanceDto(User user)
         {
-            return new UserBalanceDTO
+            return new UserBalanceDto
             {
                 Id = user.Id,
                 Name = user.Name,
                 Email = user.Email,
-                Balance = balance
+                Balance = user.Assets.Select(a => a.Transactions.Select(t => t.Amount).Sum()).Sum()
             };
         }
     }

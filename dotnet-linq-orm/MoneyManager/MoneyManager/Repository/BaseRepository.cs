@@ -2,25 +2,25 @@
 using System;
 using System.Collections.Generic;
 
-namespace MoneyManager.Repository
+namespace DataAccess.Repository
 {
     public class BaseRepository<T> where T : class
     {
-        private readonly MoneyManagerContext _moneyManagerContext;
+        protected readonly MoneyManagerContext MoneyManagerContext;
         private readonly DbSet<T> _entities;
 
-        public BaseRepository(MoneyManagerContext moneyManagerContext, DbSet<T> entities)
+        public BaseRepository(MoneyManagerContext moneyManagerContext)
         {
-            _moneyManagerContext = moneyManagerContext;
-            _entities = entities;
+            MoneyManagerContext = moneyManagerContext;
+            _entities = MoneyManagerContext.Set<T>();
         }
 
-        public IEnumerable<T> GetAll()
+        protected IEnumerable<T> GetAll()
         {
             return _entities;
         }
 
-        public T Get(Guid id)
+        protected T Get(Guid id)
         {
             return _entities.Find(id);
         }
@@ -32,7 +32,7 @@ namespace MoneyManager.Repository
 
         public void Update(T entity)
         {
-            _moneyManagerContext.Entry(entity).State = EntityState.Modified;
+            MoneyManagerContext.Entry(entity).State = EntityState.Modified;
         }
 
         public void Delete(Guid id)

@@ -1,8 +1,8 @@
-﻿using MoneyManager.Models;
+﻿using DataAccess.Models;
 using System;
-using MoneyManager.ModelGenerator;
-using MoneyManager;
-using MoneyManager.UnitOfWork;
+using DataAccess.ModelGenerator;
+using DataAccess;
+using DataAccess.UnitOfWork;
 
 namespace Client
 {
@@ -59,7 +59,7 @@ namespace Client
             Console.WriteLine("Saved successfully.");
 
             Console.WriteLine("Deleting all bob's transactions for this month: ");
-            efUnit.Transactions.DeleteAllTransactionsForMonth(bob.Id);
+            efUnit.Users.DeleteAllTransactionsForMonth(bob.Id);
 
             Console.WriteLine("Get user by email(sara@gmail.com): ");
             Console.WriteLine(efUnit.Users.GetUserByEmail("sara@gmail.com").Name);

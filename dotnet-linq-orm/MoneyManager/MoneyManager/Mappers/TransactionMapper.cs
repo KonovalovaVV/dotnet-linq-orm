@@ -1,18 +1,17 @@
-﻿using MoneyManager.DTO;
-using MoneyManager.Models;
+﻿using DataAccess.DtoModels;
+using DataAccess.Models;
 
-namespace MoneyManager.Mappers
+namespace DataAccess.Mappers
 {
     public class TransactionMapper
     {
-        public static TransactionDTO MapTransactionDTO
-            (Transaction transaction, string assetName, string categoryName, string parentCategoryName)
+        public static TransactionDto MapToTransactionDto (Transaction transaction)
         {
-            return new TransactionDTO
+            return new TransactionDto
             {
-                AssetName = assetName,
-                CategoryName = categoryName,
-                ParentCategoryName = parentCategoryName,
+                AssetName = transaction.Asset.Name,
+                CategoryName = transaction.Category.Name,
+                ParentCategoryName = transaction.Category.ParentCategory.Name,
                 Date = transaction.Date,
                 Comment = transaction.Comment
             };

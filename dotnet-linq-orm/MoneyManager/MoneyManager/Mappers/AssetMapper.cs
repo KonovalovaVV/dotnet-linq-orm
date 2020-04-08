@@ -1,25 +1,27 @@
-﻿using MoneyManager.DTO;
-using MoneyManager.Models;
+﻿using DataAccess.DtoModels;
+using DataAccess.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MoneyManager.Mappers
+namespace DataAccess.Mappers
 {
     public class AssetMapper
     {
-        public static AssetDTO MapAssetDTO(Asset asset)
+        public static AssetDto MapToAssetDto(Asset asset)
         {
-            return new AssetDTO
+            return new AssetDto
             {
                 Id = asset.Id,
                 Name = asset.Name,
-                Balance =  asset.Transactions.Select(t => t.Amount).Sum()
+                Balance =  asset.Transactions
+                    .Select(t => t.Amount)
+                    .Sum()
             };
         }
 
-       public static IEnumerable<AssetDTO> MapAssetDTO(IEnumerable<Asset> assets)
+       public static IEnumerable<AssetDto> MapToAssetDto(IEnumerable<Asset> assets)
        {
-            return assets.Select(x => MapAssetDTO(x));
+            return assets.Select(x => MapToAssetDto(x));
        }
     }
 }

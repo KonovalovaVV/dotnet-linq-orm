@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Infrastructure.AppSettings;
-using MoneyManager.ModelConfigurations;
-using MoneyManager.Models;
+using DataAccess.ModelConfigurations;
+using DataAccess.Models;
 
-namespace MoneyManager
+namespace DataAccess
 {
     public sealed class MoneyManagerContext : DbContext
     {

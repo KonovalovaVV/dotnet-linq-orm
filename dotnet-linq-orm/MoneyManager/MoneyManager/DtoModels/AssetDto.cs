@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace MoneyManager.DTO
+namespace DataAccess.DtoModels
 {
-    public class UserDTO
+    public class AssetDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
+        public decimal Balance { get; set; }
     }
 }

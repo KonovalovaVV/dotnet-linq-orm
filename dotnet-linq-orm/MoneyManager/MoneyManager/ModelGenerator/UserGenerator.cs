@@ -1,7 +1,7 @@
-﻿using MoneyManager.Models;
+﻿using DataAccess.Models;
 using System;
 
-namespace MoneyManager.ModelGenerator
+namespace DataAccess.ModelGenerator
 {
     public static class UserGenerator
     {

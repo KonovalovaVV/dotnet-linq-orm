@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace MoneyManager.DTO
+namespace DataAccess.DtoModels
 {
-    public class TransactionDTO
+    public class TransactionDto
     {
         public string AssetName { get; set; }
         public string CategoryName { get; set; }

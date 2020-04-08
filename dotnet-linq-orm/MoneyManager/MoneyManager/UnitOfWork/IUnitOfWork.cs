@@ -1,7 +1,7 @@
-﻿using MoneyManager.Repository;
+﻿using DataAccess.Repository;
 using System;
 
-namespace MoneyManager.UnitOfWork
+namespace DataAccess.UnitOfWork
 {
     public interface IUnitOfWork: IDisposable
     {

@@ -1,28 +1,23 @@
-﻿using MoneyManager.Models;
+﻿using DataAccess.DtoModels;
+using DataAccess.Mappers;
+using DataAccess.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace MoneyManager.Repository
+namespace DataAccess.Repository
 {
     public class TransactionRepository : BaseRepository<Transaction>
     {
         private readonly MoneyManagerContext _moneyManagerContext;
 
-        public TransactionRepository(MoneyManagerContext context): base(context, context.Transactions)
+        public TransactionRepository(MoneyManagerContext context): base(context)
         {
             _moneyManagerContext = context;
         }
 
-        public void DeleteAllTransactionsForMonth(Guid UserId)
+        public new TransactionDto Get(Guid transactionId)
         {
-            IEnumerable<Guid> ids = _moneyManagerContext.Transactions.Where(t => t.Date.Day == DateTime.Now.Day)
-                           .Join(_moneyManagerContext.Assets.Where(a => a.UserId == UserId),
-                           t => t.AssetId, a => a.Id,(t, a) => t.Id);
-            foreach (Guid id in ids)
-            {
-                _moneyManagerContext.Transactions.Remove(Get(id));
-            }
+            var transaction = base.Get(transactionId);
+            return TransactionMapper.MapToTransactionDto(transaction);
         }
     }
 }

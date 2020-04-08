@@ -1,14 +1,18 @@
-﻿using MoneyManager.Models;
+﻿using DataAccess.DtoModels;
+using DataAccess.Mappers;
+using DataAccess.Models;
+using System;
 
-namespace MoneyManager.Repository
+namespace DataAccess.Repository
 {
     public class AssetRepository : BaseRepository<Asset>
     {
-        private readonly MoneyManagerContext _moneyManagerContext;
+        public AssetRepository(MoneyManagerContext context) : base(context) { }
 
-        public AssetRepository(MoneyManagerContext context) : base(context, context.Assets)
+        public new AssetDto Get(Guid assetId)
         {
-            _moneyManagerContext = context;
+            var asset = base.Get(assetId);
+            return AssetMapper.MapToAssetDto(asset);
         }
     }
 }

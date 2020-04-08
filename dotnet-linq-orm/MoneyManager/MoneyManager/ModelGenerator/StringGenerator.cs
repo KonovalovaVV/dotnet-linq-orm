@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace MoneyManager.ModelGenerator
+namespace DataAccess.ModelGenerator
 {
     public static class StringGenerator
     {

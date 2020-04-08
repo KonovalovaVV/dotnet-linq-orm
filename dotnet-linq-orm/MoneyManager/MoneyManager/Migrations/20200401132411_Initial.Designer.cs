@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MoneyManager;
+using DataAccess;
 
-namespace MoneyManager.Migrations
+namespace DataAccess.Migrations
 {
     [DbContext(typeof(MoneyManagerContext))]
     [Migration("20200401132411_Initial")]
@@ -21,7 +21,7 @@ namespace MoneyManager.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MoneyManager.Models.Asset", b =>
+            modelBuilder.Entity("DataAccess.Models.Asset", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -164,7 +164,7 @@ namespace MoneyManager.Migrations
                         });
                 });
 
-            modelBuilder.Entity("MoneyManager.Models.Category", b =>
+            modelBuilder.Entity("DataAccess.Models.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -258,7 +258,7 @@ namespace MoneyManager.Migrations
                         });
                 });
 
-            modelBuilder.Entity("MoneyManager.Models.Transaction", b =>
+            modelBuilder.Entity("DataAccess.Models.Transaction", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1091,7 +1091,7 @@ namespace MoneyManager.Migrations
                         });
                 });
 
-            modelBuilder.Entity("MoneyManager.Models.User", b =>
+            modelBuilder.Entity("DataAccess.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1164,24 +1164,24 @@ namespace MoneyManager.Migrations
                         });
                 });
 
-            modelBuilder.Entity("MoneyManager.Models.Asset", b =>
+            modelBuilder.Entity("DataAccess.Models.Asset", b =>
                 {
-                    b.HasOne("MoneyManager.Models.User", null)
+                    b.HasOne("DataAccess.Models.User", null)
                         .WithMany("Assets")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MoneyManager.Models.Transaction", b =>
+            modelBuilder.Entity("DataAccess.Models.Transaction", b =>
                 {
-                    b.HasOne("MoneyManager.Models.Asset", null)
+                    b.HasOne("DataAccess.Models.Asset", null)
                         .WithMany("Transactions")
                         .HasForeignKey("AssetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MoneyManager.Models.Category", null)
+                    b.HasOne("DataAccess.Models.Category", null)
                         .WithMany("Transactions")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)

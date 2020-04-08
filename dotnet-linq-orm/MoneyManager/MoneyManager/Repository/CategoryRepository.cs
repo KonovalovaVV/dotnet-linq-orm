@@ -1,14 +1,18 @@
-﻿using MoneyManager.Models;
+﻿using DataAccess.DtoModels;
+using DataAccess.Mappers;
+using DataAccess.Models;
+using System;
 
-namespace MoneyManager.Repository
+namespace DataAccess.Repository
 {
     public class CategoryRepository : BaseRepository<Category>
     {
-        private readonly MoneyManagerContext _moneyManagerContext;
+        public CategoryRepository(MoneyManagerContext context) : base(context) { }
 
-        public CategoryRepository(MoneyManagerContext context): base(context, context.Categories)
+        public new CategoryDto Get(Guid categoryId)
         {
-            _moneyManagerContext = context;
+            var category = base.Get(categoryId);
+            return CategoryMapper.MapToCategoryDto(category);
         }
     }
 }

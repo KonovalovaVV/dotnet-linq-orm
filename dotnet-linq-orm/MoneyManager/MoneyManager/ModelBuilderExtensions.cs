@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MoneyManager.Models;
+using DataAccess.Models;
 
-namespace MoneyManager
+namespace DataAccess
 {
     public static class ModelBuilderExtensions
     {

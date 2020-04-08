@@ -1,6 +1,6 @@
-﻿namespace MoneyManager.DTO
+﻿namespace DataAccess.DtoModels
 {
-    public class TotalDTO
+    public class TotalDto
     {
         public decimal TotalIncome { get; set; }
         public decimal TotalExpence { get; set; }
