@@ -3,6 +3,7 @@ using System;
 using DataAccess.ModelGenerator;
 using DataAccess;
 using DataAccess.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 
 namespace Client
 {
@@ -29,7 +30,7 @@ namespace Client
             Category incomeCategory = new Category
             {
                 Id = Guid.NewGuid(),
-                Name = "Transport",
+                Name = "Bob's job",
                 Type = CategoryType.Income
             };
             Category expenceCategory = new Category
@@ -58,6 +59,12 @@ namespace Client
             efUnit.Save();
             Console.WriteLine("Saved successfully.");
 
+            Console.WriteLine("All bob's transactions: ");
+            foreach (var tr in efUnit.Users.GetUsersTransactions(bob.Id))
+            {
+                Console.WriteLine(tr.Comment);
+            }
+
             Console.WriteLine("Deleting all bob's transactions for this month: ");
             efUnit.Users.DeleteAllTransactionsForMonth(bob.Id);
 
@@ -81,6 +88,19 @@ namespace Client
             Console.WriteLine("Bob's current balance: ");
             Console.WriteLine(efUnit.Users.GetCurrentBalance(bob.Id).Balance);
 
+            Console.WriteLine("Transactions month report: ");
+            var transactions = efUnit.Users.GetTransactionMonthReports(bob.Id, DateTime.MinValue, DateTime.MaxValue);
+            foreach(var t in transactions)
+            {
+                Console.WriteLine("Expence: {0}; income: {1}; month: {2}.", t.TotalExpence, t.TotalIncome, t.Month);
+            }
+
+            Console.WriteLine("Get total amount of incomes: ");
+            var result = efUnit.Users.GetTotalAmountOfType(bob.Id, CategoryType.Income);
+            foreach(var r in result)
+            {
+                Console.WriteLine("Name: {0}, Amount: {1}", r.Name, r.Amount);
+            }
             efUnit.Save();
         }
     }

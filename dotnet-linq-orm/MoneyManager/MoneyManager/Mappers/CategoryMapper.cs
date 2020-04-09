@@ -11,7 +11,6 @@ namespace DataAccess.Mappers
         {
             return new CategoryDto
             {
-                Id = category.Id,
                 Name = category.Name,
                 Amount = category.Transactions
                     .Select(t => t.Amount)
