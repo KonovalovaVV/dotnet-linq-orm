@@ -1,9 +1,9 @@
 ﻿using DataAccess.Models;
 using System;
 using DataAccess.ModelGenerator;
-using DataAccess;
 using DataAccess.UnitOfWork;
-using Microsoft.EntityFrameworkCore;
+using DataAccess.DtoModels;
+using DataAccess.Mappers;
 
 namespace Client
 {
@@ -11,62 +11,70 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            UnitOfWork efUnit = new UnitOfWork(new MoneyManagerContext());
+            UnitOfWork efUnit = new UnitOfWork();
 
-            User bob = new User
+            UserDto bob = new UserDto
             {
                 Id = Guid.NewGuid(),
                 Name = "Bob",
                 Email = "bob@gmail.com",
-                Hash = "456",
-                Salt = "765"
             };
-            Asset asset = new Asset
+            AssetDto asset = new AssetDto
             {
                 Id = Guid.NewGuid(),
                 Name = "Bob's asset",
-                UserId = bob.Id
             };
-            Category incomeCategory = new Category
+            CategoryDto incomeCategory = new CategoryDto
             {
                 Id = Guid.NewGuid(),
                 Name = "Bob's job",
                 Type = CategoryType.Income
             };
-            Category expenceCategory = new Category
+            CategoryDto incomeSubCategory = new CategoryDto
+            {
+                Id = Guid.NewGuid(),
+                Name = "Bob's secret job",
+                Type = CategoryType.Income,
+                ParentCategoryId = incomeCategory.Id
+            };
+            CategoryDto expenseCategory = new CategoryDto
             {
                 Id = Guid.NewGuid(),
                 Name = "Transport",
-                Type = CategoryType.Expense
+                Type = CategoryType.Income
             };
-            efUnit.Users.Create(bob);
-            efUnit.Assets.Create(asset);
-            efUnit.Categories.Create(expenceCategory);
-            efUnit.Categories.Create(incomeCategory);
-            Transaction[] bobsTransactions = new Transaction[8];
+            efUnit.Users.Create(UserMapper.MapToUser(bob));
+            efUnit.Assets.Create(AssetMapper.MapToAsset(asset, bob));
+            efUnit.Categories.Create(CategoryMapper.MapToCategory(expenseCategory));
+            efUnit.Categories.Create(CategoryMapper.MapToCategory(incomeCategory));
+            efUnit.Categories.Create(CategoryMapper.MapToCategory(incomeSubCategory));
+
+            TransactionDto[] bobsTransactions = new TransactionDto[8];
             for (int i = 0; i < 4; i++)
             {
-                bobsTransactions[i] = TransactionGenerator.GenerateTransaction(asset, incomeCategory);
+                bobsTransactions[i] = TransactionMapper.MapToTransactionDto(TransactionGenerator.GenerateTransaction
+                    (AssetMapper.MapToAsset(asset, bob), CategoryMapper.MapToCategory(incomeCategory)));
                 bobsTransactions[i].Comment = "bob is best";
-                efUnit.Transactions.Create(bobsTransactions[i]);
+                efUnit.Transactions.Create(TransactionMapper.MapToTransaction(bobsTransactions[i]));
             }
             for (int i = 4; i < 8; i++)
             {
-                bobsTransactions[i] = TransactionGenerator.GenerateTransaction(asset, expenceCategory);
+                bobsTransactions[i] = TransactionMapper.MapToTransactionDto(TransactionGenerator.GenerateTransaction
+                    (AssetMapper.MapToAsset(asset, bob), CategoryMapper.MapToCategory(expenseCategory)));
                 bobsTransactions[i].Comment = "bob...";
-                efUnit.Transactions.Create(bobsTransactions[i]);
+                efUnit.Transactions.Create(TransactionMapper.MapToTransaction(bobsTransactions[i]));
             }
             efUnit.Save();
             Console.WriteLine("Saved successfully.");
 
             Console.WriteLine("All bob's transactions: ");
-            foreach (var tr in efUnit.Users.GetUsersTransactions(bob.Id))
+            foreach (var tr in efUnit.Transactions.GetUsersTransactions(bob.Id))
             {
                 Console.WriteLine(tr.Comment);
             }
 
             Console.WriteLine("Deleting all bob's transactions for this month: ");
-            efUnit.Users.DeleteAllTransactionsForMonth(bob.Id);
+            efUnit.Transactions.DeleteAllTransactionsForMonth(bob.Id);
 
             Console.WriteLine("Get user by email(sara@gmail.com): ");
             Console.WriteLine(efUnit.Users.GetUserByEmail("sara@gmail.com").Name);
@@ -79,7 +87,7 @@ namespace Client
             }
 
             Console.WriteLine("Bob's assets ordered by name: ");
-            var assets = efUnit.Users.GetUsersAssetsOrderByName(bob.Id);
+            var assets = efUnit.Assets.GetUsersAssets(bob.Id);
             foreach (var a in assets)
             {
                 Console.WriteLine(a.Name);
@@ -89,14 +97,15 @@ namespace Client
             Console.WriteLine(efUnit.Users.GetCurrentBalance(bob.Id).Balance);
 
             Console.WriteLine("Transactions month report: ");
-            var transactions = efUnit.Users.GetTransactionMonthReports(bob.Id, DateTime.MinValue, DateTime.MaxValue);
+            var transactions = efUnit.Transactions
+                .GetTransactionMonthReports(bob.Id, DateTime.MinValue, DateTime.MaxValue);
             foreach(var t in transactions)
             {
-                Console.WriteLine("Expence: {0}; income: {1}; month: {2}.", t.TotalExpence, t.TotalIncome, t.Month);
+                Console.WriteLine("Expence: {0}; income: {1}; month: {2}.", t.TotalExpense, t.TotalIncome, t.Month);
             }
 
             Console.WriteLine("Get total amount of incomes: ");
-            var result = efUnit.Users.GetTotalAmountOfType(bob.Id, CategoryType.Income);
+            var result = efUnit.Transactions.GetTotalAmountOfType(bob.Id, CategoryType.Income);
             foreach(var r in result)
             {
                 Console.WriteLine("Name: {0}, Amount: {1}", r.Name, r.Amount);

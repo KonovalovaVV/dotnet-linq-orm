@@ -11,9 +11,9 @@ namespace DataAccess.UnitOfWork
         private CategoryRepository categoryRepository;
         private TransactionRepository transactionRepository;
 
-        public UnitOfWork(MoneyManagerContext moneyManagerContext)
+        public UnitOfWork()
         {
-            _moneyManagerContext = moneyManagerContext;
+            _moneyManagerContext = new MoneyManagerContext();
         }
 
         public UserRepository Users

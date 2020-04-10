@@ -21,7 +21,17 @@ namespace DataAccess.Mappers
 
        public static IEnumerable<AssetDto> MapToAssetDto(IEnumerable<Asset> assets)
        {
-            return assets.Select(x => MapToAssetDto(x));
+            return assets.Select(MapToAssetDto);
        }
+
+       public static Asset MapToAsset(AssetDto assetDto, UserDto userDto)
+        {
+            return new Asset
+            {
+                Id = assetDto.Id,
+                Name = assetDto.Name,
+                UserId = userDto.Id
+            };
+        }
     }
 }

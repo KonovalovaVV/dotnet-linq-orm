@@ -10,6 +10,5 @@ namespace DataAccess.UnitOfWork
         CategoryRepository Categories { get; }
         TransactionRepository Transactions { get; }
         void Save();
-
     }
 }

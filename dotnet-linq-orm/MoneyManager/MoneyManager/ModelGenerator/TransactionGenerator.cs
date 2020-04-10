@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using DataAccess.DtoModels;
+using DataAccess.Models;
 using System;
 
 namespace DataAccess.ModelGenerator
