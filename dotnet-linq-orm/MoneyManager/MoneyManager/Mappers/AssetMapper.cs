@@ -24,13 +24,13 @@ namespace DataAccess.Mappers
             return assets.Select(MapToAssetDto);
        }
 
-       public static Asset MapToAsset(AssetDto assetDto, UserDto userDto)
+       public static Asset MapToAsset(AssetDto assetDto)
         {
             return new Asset
             {
                 Id = assetDto.Id,
                 Name = assetDto.Name,
-                UserId = userDto.Id
+                UserId = assetDto.UserId
             };
         }
     }

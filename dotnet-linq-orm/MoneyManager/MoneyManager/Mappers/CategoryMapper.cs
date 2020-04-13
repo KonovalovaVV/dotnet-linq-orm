@@ -1,6 +1,5 @@
 ﻿using DataAccess.DtoModels;
 using DataAccess.Models;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace DataAccess.Mappers
@@ -28,16 +27,6 @@ namespace DataAccess.Mappers
                 Type = category.Type,
                 ParentCategoryId = category.ParentCategoryId
             };
-        }
-
-        public static IEnumerable<CategoryWithAmount> MapToCategoryWithAmount(IEnumerable<Category> categories)
-        {
-            return categories.Select(MapToCategoryWithAmount);
-        }
-
-        public static IEnumerable<CategoryDto> MapToCategoryDto(IEnumerable<Category> categories)
-        {
-            return categories.Select(MapToCategoryDto);
         }
 
         public static Category MapToCategory(CategoryDto categoryDto)

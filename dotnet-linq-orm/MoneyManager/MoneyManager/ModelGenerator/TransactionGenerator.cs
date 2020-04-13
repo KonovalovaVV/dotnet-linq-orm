@@ -1,5 +1,4 @@
-﻿using DataAccess.DtoModels;
-using DataAccess.Models;
+﻿using DataAccess.Models;
 using System;
 
 namespace DataAccess.ModelGenerator
@@ -15,18 +14,6 @@ namespace DataAccess.ModelGenerator
                 AssetId = asset.Id,
                 Amount = (decimal)new Random().NextDouble(), 
                 Date = DateTime.Now,
-            };
-        }
-
-        public static TransactionDto GenerateTransactionDto(AssetDto assetDto, CategoryDto categoryDto)
-        {
-            return new TransactionDto
-            {
-                CategoryId = categoryDto.Id,
-                AssetId = assetDto.Id,
-                Amount = (decimal)new Random().NextDouble(),
-                Date = DateTime.Now,
-                Comment = "blahblah"
             };
         }
     }

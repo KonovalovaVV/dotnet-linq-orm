@@ -1,6 +1,7 @@
 ﻿using DataAccess.DtoModels;
 using DataAccess.Mappers;
 using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,21 +92,21 @@ namespace DataAccess.Repository
         public List<CategoryWithAmount> GetTotalAmountOfType(Guid userId, CategoryType categoryType)
         {
             List<CategoryWithAmount> categories = GetUsersCategories(userId);
-            Dictionary<Category, int> DSU = new Dictionary<Category, int>();
+            Dictionary<Category, int> CategoryGroups = new Dictionary<Category, int>();
             foreach (var category in MoneyManagerContext.Categories.Where(c => c.Type == categoryType))
             {
-                DSU.Add(category, 0);
+                CategoryGroups.Add(category, 0);
             }
-            GroupByParentCategories(ref DSU);
-            GetAmounts(DSU, ref categories);
+            GroupByParentCategories(ref CategoryGroups);
+            GetAmounts(CategoryGroups, ref categories);
             return categories;
         }
 
-        private void GroupByParentCategories(ref Dictionary<Category, int> DSU)
+        private void GroupByParentCategories(ref Dictionary<Category, int> CategoryGroups)
         {
             List<Category> categoryGroup = new List<Category>();
             int groupNumber = 1;
-            foreach (var item in DSU.ToArray())
+            foreach (var item in CategoryGroups.ToArray())
             {
                 var currentItem = item;
                 if (item.Value == 0)
@@ -117,26 +118,26 @@ namespace DataAccess.Repository
                     }
                     if (currentItem.Key.ParentCategory == null && currentItem.Value == 0)
                     {
-                        DSU[currentItem.Key] = -groupNumber++;
+                        CategoryGroups[currentItem.Key] = -groupNumber++;
                         foreach (var c in categoryGroup)
                         {
-                            DSU[c] = groupNumber;
+                            CategoryGroups[c] = groupNumber;
                         }
                     }
                     if (currentItem.Value != 0)
                     {
                         foreach (var c in categoryGroup)
                         {
-                            DSU[c] = currentItem.Value;
+                            CategoryGroups[c] = currentItem.Value;
                         }
                     }
                 }
             }
         }
 
-        private void GetAmounts(Dictionary<Category, int> DSU, ref List<CategoryWithAmount> categories)
+        private void GetAmounts(Dictionary<Category, int> CategoryGroups, ref List<CategoryWithAmount> categories)
         {
-            foreach (var item in DSU)
+            foreach (var item in CategoryGroups)
             {
                 if (item.Value < 0)
                 {
@@ -198,17 +199,15 @@ namespace DataAccess.Repository
 
         public List<CategoryWithAmount> GetUsersCategories(Guid userId)
         {
-            HashSet<CategoryWithAmount> categories = new HashSet<CategoryWithAmount>();
-            var transactions = GetUsersTransactions(userId);
-            foreach (var transaction in transactions)
-            {
-                categories
-                    .Add(CategoryMapper
-                    .MapToCategoryWithAmount(MoneyManagerContext.Categories
-                    .Where(c => c.Name == transaction.CategoryName)
-                    .FirstOrDefault()));
-            }
-            return categories.ToList();
+            return MoneyManagerContext.Transactions
+                .Where(t => t.Asset.UserId == userId)
+                .GroupBy(t => t.Category.Name)
+                .Select(tg => new CategoryWithAmount
+                {
+                    Name = tg.Key,
+                    Amount = tg.Sum(t => t.Amount)
+                })
+                .ToList();
         }
     }
 }

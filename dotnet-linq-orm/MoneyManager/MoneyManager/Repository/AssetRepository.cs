@@ -17,9 +17,9 @@ namespace DataAccess.Repository
             return AssetMapper.MapToAssetDto(asset);
         }
 
-        public void Create(AssetDto assetDto, UserDto userDto)
+        public void Create(AssetDto assetDto)
         {
-            Create(AssetMapper.MapToAsset(assetDto, userDto));
+            Create(AssetMapper.MapToAsset(assetDto));
         }
 
         // Write a query to get the asset list for the selected user (userId) 

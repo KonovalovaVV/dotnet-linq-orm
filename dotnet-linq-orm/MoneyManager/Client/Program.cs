@@ -1,6 +1,5 @@
 ﻿using DataAccess.Models;
 using System;
-using DataAccess.ModelGenerator;
 using DataAccess.UnitOfWork;
 using DataAccess.DtoModels;
 
@@ -22,6 +21,7 @@ namespace Client
             {
                 Id = Guid.NewGuid(),
                 Name = "Bob's asset",
+                UserId = bob.Id
             };
             CategoryDto incomeCategory = new CategoryDto
             {
@@ -43,7 +43,7 @@ namespace Client
                 Type = CategoryType.Income
             };
             efUnit.Users.Create(bob);
-            efUnit.Assets.Create(asset, bob);
+            efUnit.Assets.Create(asset);
             efUnit.Categories.Create(expenseCategory);
             efUnit.Categories.Create(incomeCategory);
             efUnit.Categories.Create(incomeSubCategory);
@@ -51,14 +51,26 @@ namespace Client
             TransactionDto[] bobsTransactions = new TransactionDto[8];
             for (int i = 0; i < 4; i++)
             {
-                bobsTransactions[i] = TransactionGenerator.GenerateTransactionDto(asset, incomeCategory);
-                bobsTransactions[i].Comment = "bob is best";
+                bobsTransactions[i] = new TransactionDto
+                {
+                    CategoryId = incomeCategory.Id,
+                    AssetId = asset.Id,
+                    Amount = (decimal)new Random().NextDouble(),    
+                    Date = DateTime.Now,
+                    Comment = "bob is best"
+                };
                 efUnit.Transactions.Create(bobsTransactions[i]);
             }
             for (int i = 4; i < 8; i++)
             {
-                bobsTransactions[i] = TransactionGenerator.GenerateTransactionDto(asset, expenseCategory);
-                bobsTransactions[i].Comment = "bob...";
+                bobsTransactions[i] = new TransactionDto
+                {
+                    CategoryId = expenseCategory.Id,
+                    AssetId = asset.Id,
+                    Amount = (decimal)new Random().NextDouble(),
+                    Date = DateTime.Now,
+                    Comment = "bob..."
+                };
                 efUnit.Transactions.Create(bobsTransactions[i]);
             }
             efUnit.Save();
