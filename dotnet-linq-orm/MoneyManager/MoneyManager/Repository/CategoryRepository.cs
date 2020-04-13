@@ -9,6 +9,11 @@ namespace DataAccess.Repository
     {
         public CategoryRepository(MoneyManagerContext context) : base(context) { }
 
+        public void Create(CategoryDto categoryDto)
+        {
+            Create(CategoryMapper.MapToCategory(categoryDto));
+        }
+
         public new CategoryDto Get(Guid categoryId)
         {
             var category = base.Get(categoryId);

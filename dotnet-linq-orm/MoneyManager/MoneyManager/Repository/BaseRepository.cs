@@ -25,7 +25,7 @@ namespace DataAccess.Repository
             return _entities.Find(id);
         }
 
-        public void Create(T entity)
+        protected void Create(T entity)
         {
             _entities.Add(entity);
         }

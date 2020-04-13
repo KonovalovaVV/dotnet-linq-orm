@@ -17,6 +17,11 @@ namespace DataAccess.Repository
             return UserMapper.MapToUserDto(user);
         }
 
+        public void Create(UserDto entity)
+        {
+            Create(UserMapper.MapToUser(entity));
+        }
+
         // Write a request to get the user by email.
         public User GetUserByEmail(string email)
         {

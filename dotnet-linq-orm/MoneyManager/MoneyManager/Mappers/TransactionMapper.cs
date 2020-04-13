@@ -8,7 +8,7 @@ namespace DataAccess.Mappers
 {
     public class TransactionMapper
     {
-        public static TransactionWithParentCategoryDto MapToTransactionWithParentCategoryDto (Transaction transaction)
+        public static TransactionWithParentCategoryDto MapToTransactionWithParentCategoryDto(Transaction transaction)
         {
             return new TransactionWithParentCategoryDto
             {

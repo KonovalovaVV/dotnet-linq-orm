@@ -17,5 +17,17 @@ namespace DataAccess.ModelGenerator
                 Date = DateTime.Now,
             };
         }
+
+        public static TransactionDto GenerateTransactionDto(AssetDto assetDto, CategoryDto categoryDto)
+        {
+            return new TransactionDto
+            {
+                CategoryId = categoryDto.Id,
+                AssetId = assetDto.Id,
+                Amount = (decimal)new Random().NextDouble(),
+                Date = DateTime.Now,
+                Comment = "blahblah"
+            };
+        }
     }
 }

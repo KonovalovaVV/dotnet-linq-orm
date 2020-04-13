@@ -17,6 +17,11 @@ namespace DataAccess.Repository
             return AssetMapper.MapToAssetDto(asset);
         }
 
+        public void Create(AssetDto assetDto, UserDto userDto)
+        {
+            Create(AssetMapper.MapToAsset(assetDto, userDto));
+        }
+
         // Write a query to get the asset list for the selected user (userId) 
         // ordered by the asset’s name.
         // Each record of the output model should include Asset.Id, Asset.Name and Balance.

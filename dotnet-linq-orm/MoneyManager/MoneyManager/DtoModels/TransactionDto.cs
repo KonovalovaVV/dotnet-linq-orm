@@ -1,5 +1,4 @@
-﻿using DataAccess.Models;
-using System;
+﻿using System;
 
 namespace DataAccess.DtoModels
 {

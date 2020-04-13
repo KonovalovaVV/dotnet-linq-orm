@@ -3,7 +3,6 @@ using System;
 using DataAccess.ModelGenerator;
 using DataAccess.UnitOfWork;
 using DataAccess.DtoModels;
-using DataAccess.Mappers;
 
 namespace Client
 {
@@ -43,26 +42,24 @@ namespace Client
                 Name = "Transport",
                 Type = CategoryType.Income
             };
-            efUnit.Users.Create(UserMapper.MapToUser(bob));
-            efUnit.Assets.Create(AssetMapper.MapToAsset(asset, bob));
-            efUnit.Categories.Create(CategoryMapper.MapToCategory(expenseCategory));
-            efUnit.Categories.Create(CategoryMapper.MapToCategory(incomeCategory));
-            efUnit.Categories.Create(CategoryMapper.MapToCategory(incomeSubCategory));
+            efUnit.Users.Create(bob);
+            efUnit.Assets.Create(asset, bob);
+            efUnit.Categories.Create(expenseCategory);
+            efUnit.Categories.Create(incomeCategory);
+            efUnit.Categories.Create(incomeSubCategory);
 
             TransactionDto[] bobsTransactions = new TransactionDto[8];
             for (int i = 0; i < 4; i++)
             {
-                bobsTransactions[i] = TransactionMapper.MapToTransactionDto(TransactionGenerator.GenerateTransaction
-                    (AssetMapper.MapToAsset(asset, bob), CategoryMapper.MapToCategory(incomeCategory)));
+                bobsTransactions[i] = TransactionGenerator.GenerateTransactionDto(asset, incomeCategory);
                 bobsTransactions[i].Comment = "bob is best";
-                efUnit.Transactions.Create(TransactionMapper.MapToTransaction(bobsTransactions[i]));
+                efUnit.Transactions.Create(bobsTransactions[i]);
             }
             for (int i = 4; i < 8; i++)
             {
-                bobsTransactions[i] = TransactionMapper.MapToTransactionDto(TransactionGenerator.GenerateTransaction
-                    (AssetMapper.MapToAsset(asset, bob), CategoryMapper.MapToCategory(expenseCategory)));
+                bobsTransactions[i] = TransactionGenerator.GenerateTransactionDto(asset, expenseCategory);
                 bobsTransactions[i].Comment = "bob...";
-                efUnit.Transactions.Create(TransactionMapper.MapToTransaction(bobsTransactions[i]));
+                efUnit.Transactions.Create(bobsTransactions[i]);
             }
             efUnit.Save();
             Console.WriteLine("Saved successfully.");
@@ -101,7 +98,7 @@ namespace Client
                 .GetTransactionMonthReports(bob.Id, DateTime.MinValue, DateTime.MaxValue);
             foreach(var t in transactions)
             {
-                Console.WriteLine("Expence: {0}; income: {1}; month: {2}.", t.TotalExpense, t.TotalIncome, t.Month);
+                Console.WriteLine("Expence: {0}; income: {1}; for {2}.{3}", t.TotalExpense, t.TotalIncome, t.Month, t.Year);
             }
 
             Console.WriteLine("Get total amount of incomes: ");

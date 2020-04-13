@@ -3,9 +3,7 @@ using DataAccess.Mappers;
 using DataAccess.Models;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 
 namespace DataAccess.Repository
 {
@@ -17,6 +15,11 @@ namespace DataAccess.Repository
         {
             var transaction = base.Get(transactionId);
             return TransactionMapper.MapToTransactionWithParentCategoryDto(transaction);
+        }
+
+        public void Create(TransactionDto transactionDto)
+        {
+            Create(TransactionMapper.MapToTransaction(transactionDto));
         }
 
         // Write a command to delete all user's (parameter userId) transactions in the current month.
@@ -53,24 +56,26 @@ namespace DataAccess.Repository
         public List<TransactionMonthReport> GetTransactionMonthReports(Guid userId, DateTime startDate, DateTime endDate)
         {
             List<Transaction> transactions = MoneyManagerContext.Transactions
-                .Where(t => t.Date >= startDate && t.Date <= endDate && t.Asset.UserId == userId).ToList();
-            List<TransactionMonthReport> transactionMonthReports = new List<TransactionMonthReport>();
-            foreach (var group in transactions.GroupBy(t => t.Date.Month))
+                .Where(t => t.Date >= startDate && t.Date <= endDate && t.Asset.UserId == userId)
+                .OrderBy(T => T.Date)
+                .ToList();
+
+            var transactionMonthReports = new List<TransactionMonthReport>();
+            
+            foreach (var group in transactions.GroupBy(t => new { t.Date.Month, t.Date.Year }))
             {
                 transactionMonthReports.Add(new TransactionMonthReport
                 {
                     TotalExpense = group
-                    .Where(t => t.Category.Type == CategoryType.Expense)
-                    .Select(t => t.Amount)
-                    .Sum(),
+                        .Where(t => t.Category.Type == CategoryType.Expense)
+                        .Select(t => t.Amount)
+                        .Sum(),
                     TotalIncome = group
-                    .Where(t => t.Category.Type == CategoryType.Income)
-                    .Select(t => t.Amount)
-                    .Sum(),
-                    Month = group.Key,
-                    Year = group
-                    .Select(t => t.Date.Year)
-                    .FirstOrDefault()
+                        .Where(t => t.Category.Type == CategoryType.Income)
+                        .Select(t => t.Amount)
+                        .Sum(),
+                    Month = group.Key.Month,
+                    Year = group.Key.Year
                 });
             }
             return transactionMonthReports;
@@ -85,56 +90,66 @@ namespace DataAccess.Repository
         // and then ordered them by Category.Name.
         public List<CategoryWithAmount> GetTotalAmountOfType(Guid userId, CategoryType categoryType)
         {
-            List<CategoryWithAmount> categories = new List<CategoryWithAmount>();
+            List<CategoryWithAmount> categories = GetUsersCategories(userId);
             Dictionary<Category, int> DSU = new Dictionary<Category, int>();
-            foreach(var category in MoneyManagerContext.Categories.Where(c=>c.Type == categoryType))
+            foreach (var category in MoneyManagerContext.Categories.Where(c => c.Type == categoryType))
             {
                 DSU.Add(category, 0);
             }
-            KeyValuePair<Category, int> currentItem;
-            List<Category> way = new List<Category>();
-            int colors = 1;
-            foreach(KeyValuePair<Category,int> item in DSU.ToArray())
+            GroupByParentCategories(ref DSU);
+            GetAmounts(DSU, ref categories);
+            return categories;
+        }
+
+        private void GroupByParentCategories(ref Dictionary<Category, int> DSU)
+        {
+            List<Category> categoryGroup = new List<Category>();
+            int groupNumber = 1;
+            foreach (var item in DSU.ToArray())
             {
-                currentItem = item;
-                if(item.Value == 0)
+                var currentItem = item;
+                if (item.Value == 0)
                 {
                     while (currentItem.Key.ParentCategory != null && currentItem.Value == 0)
                     {
-                        way.Add(currentItem.Key);
-                        currentItem = new KeyValuePair<Category, int>(currentItem.Key.ParentCategory, 0); 
+                        categoryGroup.Add(currentItem.Key);
+                        currentItem = new KeyValuePair<Category, int>(currentItem.Key.ParentCategory, 0);
                     }
                     if (currentItem.Key.ParentCategory == null && currentItem.Value == 0)
                     {
-                        DSU[currentItem.Key] = -colors++;
-                        foreach(var c in way)
+                        DSU[currentItem.Key] = -groupNumber++;
+                        foreach (var c in categoryGroup)
                         {
-                            DSU[c] = colors;
+                            DSU[c] = groupNumber;
                         }
                     }
                     if (currentItem.Value != 0)
                     {
-                        foreach (var c in way)
+                        foreach (var c in categoryGroup)
                         {
                             DSU[c] = currentItem.Value;
                         }
                     }
                 }
             }
-            foreach(var item in DSU)
+        }
+
+        private void GetAmounts(Dictionary<Category, int> DSU, ref List<CategoryWithAmount> categories)
+        {
+            foreach (var item in DSU)
             {
                 if (item.Value < 0)
                 {
                     if (!categories.Contains(CategoryMapper.MapToCategoryWithAmount(item.Key)))
                     {
-                        if(item.Key.Transactions != null)
-                        categories.Add(new CategoryWithAmount
-                        {
-                            Name = item.Key.Name,
-                            Amount = item.Key.Transactions
-                            .Select(t => t.Amount)
-                            .Sum()
-                        });
+                        if (item.Key.Transactions != null)
+                            categories.Add(new CategoryWithAmount
+                            {
+                                Name = item.Key.Name,
+                                Amount = item.Key.Transactions
+                                .Select(t => t.Amount)
+                                .Sum()
+                            });
                         else
                         {
                             categories.Add(new CategoryWithAmount
@@ -154,7 +169,7 @@ namespace DataAccess.Repository
                 }
                 else
                 {
-                    if (categories.Contains(CategoryMapper.MapToCategoryWithAmount(item.Key.ParentCategory)))                     
+                    if (categories.Contains(CategoryMapper.MapToCategoryWithAmount(item.Key.ParentCategory)))
                     {
                         if (item.Key.Transactions != null)
                         {
@@ -172,14 +187,28 @@ namespace DataAccess.Repository
                             {
                                 Name = item.Key.ParentCategory.Name,
                                 Amount = item.Key.Transactions
-                            .Select(t => t.Amount)
-                            .Sum()
+                                .Select(t => t.Amount)
+                                .Sum()
                             });
                         }
                     }
                 }
             }
-            return categories;
+        }
+
+        public List<CategoryWithAmount> GetUsersCategories(Guid userId)
+        {
+            HashSet<CategoryWithAmount> categories = new HashSet<CategoryWithAmount>();
+            var transactions = GetUsersTransactions(userId);
+            foreach (var transaction in transactions)
+            {
+                categories
+                    .Add(CategoryMapper
+                    .MapToCategoryWithAmount(MoneyManagerContext.Categories
+                    .Where(c => c.Name == transaction.CategoryName)
+                    .FirstOrDefault()));
+            }
+            return categories.ToList();
         }
     }
 }
