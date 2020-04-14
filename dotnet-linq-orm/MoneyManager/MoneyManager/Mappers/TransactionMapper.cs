@@ -31,6 +31,7 @@ namespace DataAccess.Mappers
                 Comment = transaction.Comment
             };
         }
+
         public static IEnumerable<TransactionWithParentCategoryDto> MapToTransactionWithParentCategoryDto(IEnumerable<Transaction> transactions)
         {
             return transactions.Select(MapToTransactionWithParentCategoryDto);
