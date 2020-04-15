@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DataAccess.ModelConfigurations;
 using DataAccess.Models;
+using Infrastructure.AppSettings;
 
 namespace DataAccess
 {
@@ -13,12 +14,12 @@ namespace DataAccess
 
         public MoneyManagerContext()
         {
-            //Database.Migrate();
+            Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=bdmoneymanager;Trusted_Connection=True;")
+            optionsBuilder.UseSqlServer(AppSettingsProvider.GetInstance().Settings.ConnectionString)
                           .EnableDetailedErrors()
                           .EnableSensitiveDataLogging();
         }

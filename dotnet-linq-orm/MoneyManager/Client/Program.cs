@@ -88,8 +88,8 @@ namespace Client
             Console.WriteLine("Deleting all bob's transactions for this month: ");
             efUnit.Transactions.DeleteAllTransactionsForMonth(bob.Id);
 
-            Console.WriteLine("Get user by email(sara@gmail.com): ");
-            Console.WriteLine(efUnit.Users.GetUserByEmail("sara@gmail.com").Name);
+            Console.WriteLine("Get user by email(bob@gmail.com): ");
+            Console.WriteLine(efUnit.Users.GetUserByEmail("bob@gmail.com").Name);
 
             Console.WriteLine("All users ordered by name: ");
             var users = efUnit.Users.GetAllUsersOrderByName();
