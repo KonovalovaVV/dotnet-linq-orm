@@ -13,12 +13,14 @@ namespace DataAccess
 
         public MoneyManagerContext()
         {
-            Database.Migrate();
+            //Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=bdmoneymanager;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=bdmoneymanager;Trusted_Connection=True;")
+                          .EnableDetailedErrors()
+                          .EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

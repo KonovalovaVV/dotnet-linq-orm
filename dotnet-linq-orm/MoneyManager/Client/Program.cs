@@ -27,20 +27,23 @@ namespace Client
             {
                 Id = Guid.NewGuid(),
                 Name = "Bob's job",
-                Type = CategoryType.Income
+                Type = CategoryType.Income,
+                Color = Convert.ToInt32("233D4D", 16)
             };
             CategoryDto incomeSubCategory = new CategoryDto
             {
                 Id = Guid.NewGuid(),
                 Name = "Bob's secret job",
                 Type = CategoryType.Income,
+                Color = incomeCategory.Color,
                 ParentCategoryId = incomeCategory.Id
             };
             CategoryDto expenseCategory = new CategoryDto
             {
                 Id = Guid.NewGuid(),
-                Name = "Transport",
-                Type = CategoryType.Income
+                Color = Convert.ToInt32("233D4D", 16),
+                Name = "Sport",
+                Type = CategoryType.Expense
             };
             efUnit.Users.Create(bob);
             efUnit.Assets.Create(asset);
@@ -65,7 +68,7 @@ namespace Client
             {
                 bobsTransactions[i] = new TransactionDto
                 {
-                    CategoryId = expenseCategory.Id,
+                    CategoryId = incomeCategory.Id,
                     AssetId = asset.Id,
                     Amount = (decimal)new Random().NextDouble(),
                     Date = DateTime.Now,
