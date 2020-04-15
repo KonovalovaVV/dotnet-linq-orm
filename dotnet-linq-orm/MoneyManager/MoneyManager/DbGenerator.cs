@@ -10,10 +10,10 @@ namespace DataAccess
         private const int CategoryAmount = 10;
         private const int TransactionAmount = 100;
 
-        public User[] DefaultUsers = new User[UserAmount];
-        public Asset[] DefaultAssets = new Asset[AssetAmount];
-        public Category[] DefaultCategories = new Category[CategoryAmount];
-        public Transaction[] DefaultTransactions = new Transaction[TransactionAmount];
+        public User[] Users = new User[UserAmount];
+        public Asset[] Assets = new Asset[AssetAmount];
+        public Category[] Categories = new Category[CategoryAmount];
+        public Transaction[] Transactions = new Transaction[TransactionAmount];
 
         public DbGenerator()
         {
@@ -23,11 +23,26 @@ namespace DataAccess
             GenerateTransactions();
         }
 
+        public static Category[] GetDefaultCategories()
+        {
+            Category[] categories = new Category[CategoryAmount];
+            for (int i = 0; i < CategoryAmount / 2; i++)
+            {
+                categories[i] = CategoryGenerator.GenerateCategory();
+            }
+
+            for (int i = CategoryAmount / 2; i < CategoryAmount; i++)
+            {
+                categories[i] = CategoryGenerator.GenerateCategory(categories[i % CategoryAmount / 2]);
+            }
+            return categories;
+        }
+
         private void GenerateUsers()
         {
             for(int i = 0; i < UserAmount; i++)
             {
-                DefaultUsers[i] = UserGenerator.GenerateUser();
+                Users[i] = UserGenerator.GenerateUser();
             }
         }
 
@@ -35,7 +50,7 @@ namespace DataAccess
         {
             for (int i = 0; i < AssetAmount; i++)
             {
-                DefaultAssets[i] = AssetGenerator.GenerateAsset(DefaultUsers[i % UserAmount]);
+                Assets[i] = AssetGenerator.GenerateAsset(Users[i % UserAmount]);
             }
         }
 
@@ -43,12 +58,12 @@ namespace DataAccess
         {
             for (int i = 0; i < CategoryAmount/2; i++)
             {
-                DefaultCategories[i] = CategoryGenerator.GenerateCategory();
+                Categories[i] = CategoryGenerator.GenerateCategory();
             }
 
             for (int i = CategoryAmount / 2; i < CategoryAmount; i++)
             {
-                DefaultCategories[i] = CategoryGenerator.GenerateCategory(DefaultCategories[i % CategoryAmount/2]);
+                Categories[i] = CategoryGenerator.GenerateCategory(Categories[i % CategoryAmount/2]);
             }
         }
 
@@ -56,8 +71,8 @@ namespace DataAccess
         {
             for(int i = 0; i < TransactionAmount; i++)
             {
-                DefaultTransactions[i] = TransactionGenerator
-                    .GenerateTransaction(DefaultAssets[i % AssetAmount], DefaultCategories[i % CategoryAmount]);
+                Transactions[i] = TransactionGenerator
+                    .GenerateTransaction(Assets[i % AssetAmount], Categories[i % CategoryAmount]);
             }
         }
     }

@@ -20,7 +20,7 @@ namespace DataAccess.ModelConfigurations
                 .HasOne(p => p.ParentCategory)
                 .WithMany()
                 .HasForeignKey(p => p.ParentCategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
