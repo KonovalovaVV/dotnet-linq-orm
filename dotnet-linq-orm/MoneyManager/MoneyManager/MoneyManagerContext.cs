@@ -27,7 +27,6 @@ namespace DataAccess
             modelBuilder.ApplyConfiguration(new AssetConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
-            //modelBuilder.Entity<Category>().HasData(DbGenerator.GetDefaultCategories());
 
             modelBuilder.Seed();
         }
