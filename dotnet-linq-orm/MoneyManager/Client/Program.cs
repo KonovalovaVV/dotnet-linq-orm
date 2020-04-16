@@ -2,6 +2,7 @@
 using System;
 using DataAccess.UnitOfWork;
 using DataAccess.DtoModels;
+using Infrastructure;
 
 namespace Client
 {
@@ -28,7 +29,7 @@ namespace Client
                 Id = Guid.NewGuid(),
                 Name = "Bob's job",
                 Type = CategoryType.Income,
-                Color = Convert.ToInt32("233D4D", 16)
+                Color = ColorHelper.DefaultColor
             };
             CategoryDto incomeSubCategory = new CategoryDto
             {
@@ -41,7 +42,7 @@ namespace Client
             CategoryDto expenseCategory = new CategoryDto
             {
                 Id = Guid.NewGuid(),
-                Color = Convert.ToInt32("233D4D", 16),
+                Color = ColorHelper.DefaultColor,
                 Name = "Sport",
                 Type = CategoryType.Expense
             };

@@ -1,13 +1,18 @@
-﻿using System;
-
-namespace Infrastructure
+﻿namespace Infrastructure
 {
     public class ColorHelper
     {
         public const int DefaultColor = 2309453;
-        public static int GetColor(string hexColor)
+        public const string DefaultColorString = "233D4D";
+
+        public static int GetColor(string hexColor = DefaultColorString)
         {
-            return Convert.ToInt32(hexColor, 16);
+            return int.Parse(hexColor, System.Globalization.NumberStyles.HexNumber);
+        }
+
+        public static string GetColor(int color)
+        {
+            return color.ToString("X");
         }
     }
 }
