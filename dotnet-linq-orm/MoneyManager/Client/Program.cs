@@ -2,6 +2,7 @@
 using System;
 using DataAccess.UnitOfWork;
 using DataAccess.DtoModels;
+using Infrastructure;
 
 namespace Client
 {
@@ -27,20 +28,23 @@ namespace Client
             {
                 Id = Guid.NewGuid(),
                 Name = "Bob's job",
-                Type = CategoryType.Income
+                Type = CategoryType.Income,
+                Color = ColorHelper.DefaultColor
             };
             CategoryDto incomeSubCategory = new CategoryDto
             {
                 Id = Guid.NewGuid(),
                 Name = "Bob's secret job",
                 Type = CategoryType.Income,
+                Color = incomeCategory.Color,
                 ParentCategoryId = incomeCategory.Id
             };
             CategoryDto expenseCategory = new CategoryDto
             {
                 Id = Guid.NewGuid(),
-                Name = "Transport",
-                Type = CategoryType.Income
+                Color = ColorHelper.DefaultColor,
+                Name = "Sport",
+                Type = CategoryType.Expense
             };
             efUnit.Users.Create(bob);
             efUnit.Assets.Create(asset);
@@ -65,7 +69,7 @@ namespace Client
             {
                 bobsTransactions[i] = new TransactionDto
                 {
-                    CategoryId = expenseCategory.Id,
+                    CategoryId = incomeCategory.Id,
                     AssetId = asset.Id,
                     Amount = (decimal)new Random().NextDouble(),
                     Date = DateTime.Now,
@@ -85,8 +89,8 @@ namespace Client
             Console.WriteLine("Deleting all bob's transactions for this month: ");
             efUnit.Transactions.DeleteAllTransactionsForMonth(bob.Id);
 
-            Console.WriteLine("Get user by email(sara@gmail.com): ");
-            Console.WriteLine(efUnit.Users.GetUserByEmail("sara@gmail.com").Name);
+            Console.WriteLine("Get user by email(bob@gmail.com): ");
+            Console.WriteLine(efUnit.Users.GetUserByEmail("bob@gmail.com").Name);
 
             Console.WriteLine("All users ordered by name: ");
             var users = efUnit.Users.GetAllUsersOrderByName();

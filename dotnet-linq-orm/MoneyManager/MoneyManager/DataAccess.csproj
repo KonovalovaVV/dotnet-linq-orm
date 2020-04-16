@@ -6,11 +6,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200415070604_Initial.cs" />
+    <Compile Remove="Migrations\20200415070604_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200415071228_Initial.cs" />
+    <Compile Remove="Migrations\20200415071228_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200415071333_Initial.cs" />
+    <Compile Remove="Migrations\20200415071333_Initial.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Repository\UserRepository.cs~RF52b586da.TMP" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3">
       <PrivateAssets>all</PrivateAssets>

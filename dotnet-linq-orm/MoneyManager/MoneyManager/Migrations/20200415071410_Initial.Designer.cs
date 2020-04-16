@@ -4,14 +4,16 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MoneyManagerContext))]
-    partial class MoneyManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20200415071410_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,9 +48,6 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Color")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(64)")
@@ -69,72 +68,8 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9f3ee034-bb6e-4e89-a050-a3899e4fa0a8"),
-                            Color = 2309453,
-                            Name = "Transport",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = new Guid("b5b2d8db-5558-4613-91d0-634167579424"),
-                            Color = 2309453,
-                            Name = "Taxi",
-                            ParentCategoryId = new Guid("9f3ee034-bb6e-4e89-a050-a3899e4fa0a8"),
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = new Guid("053ca69a-963a-44f6-8bad-3a488ee68951"),
-                            Color = 2309453,
-                            Name = "Bus",
-                            ParentCategoryId = new Guid("9f3ee034-bb6e-4e89-a050-a3899e4fa0a8"),
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = new Guid("f1126ef2-c701-4ad9-9cc6-80d3f1527f8a"),
-                            Color = 2444109,
+                            Id = new Guid("e0175740-7ef9-47e2-a7ac-00d0c6c07e63"),
                             Name = "Food",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = new Guid("44f728a8-fb90-4c18-879a-67fde42c654d"),
-                            Color = 2309453,
-                            Name = "Sweet",
-                            ParentCategoryId = new Guid("f1126ef2-c701-4ad9-9cc6-80d3f1527f8a"),
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = new Guid("d9b44a60-f7a1-4b53-90ca-ba2927c6b922"),
-                            Color = 2309453,
-                            Name = "Sweet",
-                            ParentCategoryId = new Guid("44f728a8-fb90-4c18-879a-67fde42c654d"),
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = new Guid("1ad92cde-b4e0-4f6c-be63-c60a57d4da53"),
-                            Color = 2309453,
-                            Name = "Dairy products",
-                            ParentCategoryId = new Guid("f1126ef2-c701-4ad9-9cc6-80d3f1527f8a"),
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = new Guid("e784cd63-c32b-4710-8308-5c4770f70518"),
-                            Color = 2309453,
-                            Name = "Milk",
-                            ParentCategoryId = new Guid("1ad92cde-b4e0-4f6c-be63-c60a57d4da53"),
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = new Guid("82d5eb50-e377-4f32-9e90-32107ff8de12"),
-                            Color = 2309453,
-                            Name = "Cheese",
-                            ParentCategoryId = new Guid("1ad92cde-b4e0-4f6c-be63-c60a57d4da53"),
                             Type = 2
                         });
                 });

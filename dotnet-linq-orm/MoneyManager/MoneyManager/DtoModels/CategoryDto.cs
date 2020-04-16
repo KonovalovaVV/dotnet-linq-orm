@@ -9,5 +9,6 @@ namespace DataAccess.DtoModels
         public string Name { get; set; }
         public CategoryType Type { get; set; }
         public Guid? ParentCategoryId { get; set; }
+        public int Color { get; set; }
     }
 }

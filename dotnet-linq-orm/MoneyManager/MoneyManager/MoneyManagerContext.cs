@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Infrastructure.AppSettings;
 using DataAccess.ModelConfigurations;
 using DataAccess.Models;
+using Infrastructure.AppSettings;
 
 namespace DataAccess
 {
@@ -14,12 +14,14 @@ namespace DataAccess
 
         public MoneyManagerContext()
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(AppSettingsProvider.GetInstance().Settings.ConnectionString);
+            optionsBuilder.UseSqlServer(AppSettingsProvider.GetInstance().Settings.ConnectionString)
+                          .EnableDetailedErrors()
+                          .EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
